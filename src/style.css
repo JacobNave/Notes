@@ -1,0 +1,109 @@
+.header {
+  text-align: left;
+  font-size: 40px;
+  color: gray;
+  height: 75px;
+  padding-top: 15px;
+  padding-left: 25px;
+  background-color: #f2ff91;
+  display: flex;
+  border-bottom: 1px solid gray;
+}
+
+.deleteButton {
+  text-align: center;
+  font-size: 50px;
+  font-weight: bold;
+  height: 60px;
+  width: 60px;
+  background-color: #f2ff91;
+  border-color: #dfed79;
+  border-style: solid;
+  border-width: 0px;
+  position: absolute;
+  right: 95px;
+}
+
+.deleteButton:hover {
+  opacity: 70%;
+}
+
+.note {
+  display: flex;
+  align-items: baseline;
+  height: 50px;
+  background-color: #f2ff91;
+}
+
+.noteClosed {
+  display: flex;
+  align-items: baseline;
+  height: 50px;
+  background-color: #f2ff91;
+  border-bottom: 1px solid gray;
+}
+
+.noteBody {
+  background-color: #f2ff91;
+  border-bottom: 1px solid gray;
+}
+
+.noteText {
+  padding-left: 15px;
+  color: gray;
+  background-color: #f2ff91;
+  border-width: 0px;
+  text-align: justify;
+  width: 75%;
+  min-height: 20px;
+  max-height: 500px;
+}
+
+
+.addButton {
+  text-align: center;
+  font-size: 50px;
+  font-weight: bold;
+  height: 60px;
+  width: 60px;
+  background-color: #f2ff91;
+  border-color: #dfed79;
+  border-style: solid;
+  border-width: 0px;
+  position: absolute;
+  right: 25px;
+}
+
+.addButton:hover {
+  opacity: 50%;
+}
+
+.checkbox {
+  height: 20px;
+  width: 20px;
+}
+
+.date {
+  position:absolute;
+  right: 30px;
+}
+
+.noteTitle {
+  position: relative;
+  top: -2px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.inputTitle {
+  position: relative;
+  top: 5px;
+  background-color: #f2ff91;
+  border-width: 0px;
+  font-size: 18px;
+  font-weight: bolder;
+}
+
+.noteTitle:hover {
+  text-decoration: underline;
+}
