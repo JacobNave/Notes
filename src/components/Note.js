@@ -80,7 +80,7 @@ class Note extends React.Component {
           <div className = "note" onClick = {() => this.toggleOpen()}>
             <input className = "checkbox" type = 'checkbox' checked = {this.state.note.selected} onChange = {this.check}/>
             {this.getTitle()}
-            <p className = 'date'>{this.state.note.date.toDateString()}</p>
+            <p className = 'date'>{this.state.note.date.split("T")[0]}</p>
           </div>
           <textarea style = {style} ref={c=>this.textarea=c} onChange = {this.state.textChange} id={this.state.note.id} className = 'noteText' value = {this.state.note.text}/>
         </div>
@@ -91,7 +91,7 @@ class Note extends React.Component {
         <div className = "noteClosed" onClick = {() => this.toggleOpen()}>
           <input className = "checkbox" type = 'checkbox' checked = {this.state.note.selected} onChange = {this.check}/>
           {this.getTitle()}
-          <p className = 'date'>{this.state.note.date.toDateString()}</p>
+          <p className = 'date'>{this.state.note.date.split("T")[0]}</p>
         </div>
       );
     }

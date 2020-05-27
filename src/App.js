@@ -8,14 +8,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      notes: data.map(note => {return({
-        id: note.id,
-        title: note.title,
-        text: note.text,
-        date: note.date,
-        open: false,
-        selected: false,
-      })}),}
+      notes: [],}
     this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.addNote = this.addNote.bind(this);
@@ -84,6 +77,32 @@ class App extends React.Component {
     return {notes: updated};
   });
   }
+
+  componentDidMount() {
+    console.log('mount')
+    fetch("http://localhost:3001", {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(response => response.json())
+    .then(data => {
+      const notesData = data.notes[0].map(newNote => {
+        let note = {
+          id: newNote._id,
+          title: newNote.title,
+          text: newNote.text,
+          date: newNote.date,
+          open: false,
+          selected: false,
+        }
+        return note;
+      })
+      console.log(notesData);
+      this.setState({notes: notesData});
+    })
+  }
+
 
   handleChange(event) {
     const {id, value} = event.target;
