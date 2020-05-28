@@ -1,14 +1,16 @@
 import React from 'react';
 import './style.css';
 import Header from './components/Header';
-import data from './data';
 import Body from './components/Body';
+const serverUrl = "http://localhost:3001";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      notes: [],}
+      notes: [],
+      removed: [],
+    }
     this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.addNote = this.addNote.bind(this);
@@ -36,11 +38,16 @@ class App extends React.Component {
   }
 
   removeSelected() {
+    var removedNotes = [];
     this.setState(prevState => {
       const updated = prevState.notes.filter(note => {
+        if(!note.selected) {
+          removedNotes.push(note);
+        }
         return !note.selected;
       });
-      return {notes: updated};
+      const updatedRemoved = prevState.removed.concat(removedNotes);
+      return {notes: updated, removed: updatedRemoved};
     });
   }
 
@@ -79,8 +86,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    console.log('mount')
-    fetch("http://localhost:3001", {
+    fetch(serverUrl, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -98,8 +104,37 @@ class App extends React.Component {
         }
         return note;
       })
-      console.log(notesData);
       this.setState({notes: notesData});
+    })
+  }
+
+  componentWillUnmount() {
+    const serverNotes = this.state.notes.map(note => {
+      let newNote = {
+        id: note.id,
+        title: note.title,
+        text: note.text,
+        date: note.date,
+      }
+    });
+    const serverRemoved = this.state.removed.map(note => {
+      let newNote = {
+        id: note.id,
+        title: note.title,
+        text: note.text,
+        date: note.date,
+      }
+    });
+    fetch(serverUrl, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        notes: serverNotes,
+        removed: serverRemoved,
+      })
     })
   }
 
