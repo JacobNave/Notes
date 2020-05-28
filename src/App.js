@@ -43,6 +43,17 @@ class App extends React.Component {
       const updated = prevState.notes.filter(note => {
         if(!note.selected) {
           removedNotes.push(note);
+        } else {
+          fetch(serverUrl, {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              removed: note.id,
+            })
+          })
         }
         return !note.selected;
       });
@@ -108,7 +119,7 @@ class App extends React.Component {
     })
   }
 
-  componentWillUnmount() {
+  update() {
     const serverNotes = this.state.notes.map(note => {
       let newNote = {
         id: note.id,

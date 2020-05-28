@@ -18,31 +18,34 @@ router.get('/', async (req, res) => {
 
 //Remove notes and update notes
 router.post('/', async (req, res) => {
+  console.log('post')
   try{
-    const noteList = [];
+    Note.deleteOne({_id: req.body.removed}, err => {
+      if(err) console.log(err);
+      console.log(req.body.removed);
+    })
+    /*let noteList = [];
     Note.find({})
     .then(list => {
       noteList = list.map(note => {
           return note.id;
       });
-      req.json()
     })
-    .then(data => {
-      console.log(data);
-      const notes = data.notes;
-      const removed = data.removed;
+    .then(() => {
+      //console.log(data);
+      //const notes = data.notes;
+      //const removed = data.removed;
       //Update each note
       /*notes.forEach(element => {
 
-      })*/
-
-      removed.forEach(element => {
-
       })
 
-    })
-  } catch {
-    res.send('Err')
+
+    })*/
+
+
+  } catch(err) {
+    console.log(err)
   }
 })
 
