@@ -59,7 +59,7 @@ class App extends React.Component {
         id: newId,
         title: 'New Note',
         text: '',
-        date: new Date(),
+        date: (new Date()).toISOString(),
         open: false,
       });
       return {notes: updated};

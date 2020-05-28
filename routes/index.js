@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
 
 
 //Remove notes and update notes
-/*router.post('/', async (req, res) => {
+router.post('/', async (req, res) => {
   try{
     const noteList = [];
     Note.find({})
@@ -34,7 +34,7 @@ router.get('/', async (req, res) => {
       //Update each note
       /*notes.forEach(element => {
 
-      })
+      })*/
 
       removed.forEach(element => {
 
@@ -44,7 +44,7 @@ router.get('/', async (req, res) => {
   } catch {
     res.send('Err')
   }
-})*/
+})
 
 
 module.exports = router;
