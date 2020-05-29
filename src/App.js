@@ -8,8 +8,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      newNoteCount: 0,
       notes: [],
-      removed: [],
     }
     this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -41,9 +41,8 @@ class App extends React.Component {
     var removedNotes = [];
     this.setState(prevState => {
       const updated = prevState.notes.filter(note => {
-        if(!note.selected) {
-          removedNotes.push(note);
-        } else {
+        if(note.selected) {
+          //delete from server
           fetch(serverUrl, {
             method: 'POST',
             headers: {
@@ -57,23 +56,49 @@ class App extends React.Component {
         }
         return !note.selected;
       });
-      const updatedRemoved = prevState.removed.concat(removedNotes);
-      return {notes: updated, removed: updatedRemoved};
+      return {notes: updated};
     });
   }
 
   addNote() {
     this.setState(prevState => {
       const updated = prevState.notes.slice();
-      var newId = (updated.length > 0) ? (updated[updated.length - 1].id + 1) : 1;
-      updated.push({
+      var newId = this.state.newNoteCount;
+      var newNote = {
         id: newId,
         title: 'New Note',
         text: '',
         date: (new Date()).toISOString(),
         open: false,
+      };
+      updated.push(newNote);
+
+      //add in server
+      console.log('adding')
+      fetch(serverUrl, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          added: newNote,
+        })
+      }).then(response => {
+        console.log('fetched')
+        this.setState(prevState => {
+          const newState = prevState.notes;
+          //swap temp id with database id
+          newState.forEach(note => {
+            if(note.id == response.oldId) {
+              note.id = response.newId; //assign id
+            }
+          });
+          return {notes: newState};
+        });
       });
-      return {notes: updated};
+
+      return {notes: updated, newNoteCount: newId + 1};
     });
   }
 
