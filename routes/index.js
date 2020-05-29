@@ -19,19 +19,22 @@ router.get('/', async (req, res) => {
 
 //Remove notes and update notes
 router.post('/', async (req, res) => {
-  console.log('post')
   try{
-    if(req.body.removed) { //if sent a removed item
-      Note.deleteOne({_id: req.body.removed}, err => {
+    if(req.body.removed) { //REMOVE NOTE
+      Note.deleteOne({_id: ObjectID(req.body.removed)}, err => {
         if(err) console.log(err);
       })
-    }else if (req.body.added) { //if added item is sent
+
+    }else if (req.body.added) { //ADD NOTE
       var newId = new ObjectID();
       var newNote = new Note({title: req.body.added.title, text: req.body.added.text ,_id: newId})
       newNote.save(newNote, err => {
         if(err) console.log(err);
       });
       res.json({oldId: req.body.added.id, newId: newId});
+
+    } else if (req.body.update) { //UPDATE NOTE
+
     }
 
   } catch(err) {

@@ -74,7 +74,6 @@ class App extends React.Component {
       updated.push(newNote);
 
       //add in server
-      console.log('adding')
       fetch(serverUrl, {
         method: 'POST',
         headers: {
@@ -84,18 +83,19 @@ class App extends React.Component {
         body: JSON.stringify({
           added: newNote,
         })
-      }).then(response => {
-        console.log('fetched')
+      }).then(response => response.json())
+        .then(data => {
+        //console.log(data);
         this.setState(prevState => {
           const newState = prevState.notes;
           //swap temp id with database id
           newState.forEach(note => {
-            if(note.id == response.oldId) {
-              note.id = response.newId; //assign id
+            if(note.id == data.oldId) {
+              note.id = data.newId; //assign id
             }
           });
           return {notes: newState};
-        });
+      });
       });
 
       return {notes: updated, newNoteCount: newId + 1};
