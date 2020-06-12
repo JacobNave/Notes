@@ -29,5 +29,5 @@ app.use('/', indexRouter)
 
 
 app.listen(3001, () => {
-  console.log('Running on localhost:3000')
+  console.log('Running on localhost:3001')
 })

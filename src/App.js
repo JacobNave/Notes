@@ -20,19 +20,13 @@ class App extends React.Component {
   }
 
   handleSelect(id) {
-    var ran = false;
     this.setState(prevState => {
-      if(ran) {
-        return {};
-      }
-      ran = !ran;
       const updated = prevState.notes.map(note => {
         if(note.id == id) {
           note.selected = !note.selected;
         }
         return note;
       });
-      console.log(updated);
       return {notes:updated};
     });
   }
@@ -102,19 +96,15 @@ class App extends React.Component {
     });
   }
 
-  //FIX THIS SPAGHETTI CODE
+
   handleClick(id) {
-    var count = 0;
     this.setState(prevState => {
       const updated = prevState.notes.map(note => {
-        count += 1;
-        if(count <= prevState.notes.length) {
           if(note.id === id) {
             note.open = !note.open;
           } else {
             note.open = false;
           }
-        }
         return note;
       });
     return {notes: updated};
@@ -144,23 +134,8 @@ class App extends React.Component {
     })
   }
 
-  update() {
-    const serverNotes = this.state.notes.map(note => {
-      let newNote = {
-        id: note.id,
-        title: note.title,
-        text: note.text,
-        date: note.date,
-      }
-    });
-    const serverRemoved = this.state.removed.map(note => {
-      let newNote = {
-        id: note.id,
-        title: note.title,
-        text: note.text,
-        date: note.date,
-      }
-    });
+
+  updateNote(updatedNote) {
     fetch(serverUrl, {
       method: 'POST',
       headers: {
@@ -168,8 +143,7 @@ class App extends React.Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        notes: serverNotes,
-        removed: serverRemoved,
+        updated: updatedNote,
       })
     })
   }
