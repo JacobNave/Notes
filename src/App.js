@@ -3,7 +3,7 @@ import './style.css';
 import Header from './components/Header';
 import Body from './components/Body';
 const serverUrl = "http://localhost:3001";
-
+var lastEdit = Date.now()
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -17,6 +17,8 @@ class App extends React.Component {
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
     this.removeSelected = this.removeSelected.bind(this);
+    this.updateNote = this.updateNote.bind(this);
+    this.timeout = this.timeout.bind(this);
   }
 
   handleSelect(id) {
@@ -143,11 +145,17 @@ class App extends React.Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        updated: updatedNote,
+        update: updatedNote,
       })
     })
   }
 
+  timeout(changedNote){
+    var currentTime = Date.now()
+    if(currentTime - lastEdit >= 1000){
+      this.updateNote(changedNote)
+    }
+  }
 
   handleChange(event) {
     const {id, value} = event.target;
@@ -155,6 +163,9 @@ class App extends React.Component {
       const updated = prevState.notes.map(note => {
         if(note.id == id) {
           note.text = value;
+
+          lastEdit = Date.now()//update last edit time
+          setTimeout(() => this.timeout(note), 1500)
         }
         return note;
       });
@@ -162,12 +173,16 @@ class App extends React.Component {
     })
   }
 
+
   handleTitleChange(event) {
     const {id, value} = event.target;
     this.setState(prevState => {
       const updated = prevState.notes.map(note => {
         if(note.id == id) {
           note.title = value;
+
+          lastEdit = Date.now()//update last edit time
+          setTimeout(this.timeout(note), 1500)
         }
         return note;
       });

@@ -34,9 +34,9 @@ router.post('/', async (req, res) => {
       res.json({oldId: req.body.added.id, newId: newId});
 
     } else if (req.body.update) { //UPDATE NOTE
-        Note.update({_id: req.body.update.id}, {
+        Note.updateOne({_id: req.body.update.id}, {
           title: req.body.update.title,
-          text: req.body.update.test
+          text: req.body.update.text
         }, err => {
           if(err) console.log(err)
         })
