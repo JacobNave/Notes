@@ -24,6 +24,11 @@ class App extends React.Component {
     this.updateList = this.updateList.bind(this);
     this.updateLocal = this.updateLocal.bind(this);
     this.timeout = this.timeout.bind(this);
+
+    window.addEventListener("beforeunload", () =>
+    {
+      this.updateList()
+    });
   }
 
   handleSelect(id) {
