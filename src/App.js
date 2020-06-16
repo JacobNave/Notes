@@ -3,7 +3,10 @@ import './style.css';
 import Header from './components/Header';
 import Body from './components/Body';
 const serverUrl = "http://localhost:3001";
+
 var lastEdit = Date.now()
+var toUpdate = []
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -18,6 +21,8 @@ class App extends React.Component {
     this.handleSelect = this.handleSelect.bind(this);
     this.removeSelected = this.removeSelected.bind(this);
     this.updateNote = this.updateNote.bind(this);
+    this.updateList = this.updateList.bind(this);
+    this.updateLocal = this.updateLocal.bind(this);
     this.timeout = this.timeout.bind(this);
   }
 
@@ -150,10 +155,27 @@ class App extends React.Component {
     })
   }
 
+  updateList(){
+    toUpdate.forEach((item) => {
+      this.updateNote(item)
+    })
+  }
+
+
+  updateLocal(note) {
+    for(var i = 0; i < toUpdate.length; i++){
+      if(note.id == toUpdate[i].id) {
+        toUpdate[i] = note;
+        return;
+      }
+    }
+    toUpdate.push(note)
+  }
+
   timeout(changedNote){
     var currentTime = Date.now()
     if(currentTime - lastEdit >= 1000){
-      this.updateNote(changedNote)
+      this.updateList()
     }
   }
 
@@ -165,6 +187,7 @@ class App extends React.Component {
           note.text = value;
 
           lastEdit = Date.now()//update last edit time
+          this.updateLocal(note);
           setTimeout(() => this.timeout(note), 1500)
         }
         return note;
@@ -182,7 +205,8 @@ class App extends React.Component {
           note.title = value;
 
           lastEdit = Date.now()//update last edit time
-          setTimeout(this.timeout(note), 1500)
+          this.updateLocal(note);
+          setTimeout(() => this.timeout(note), 1500)
         }
         return note;
       });
